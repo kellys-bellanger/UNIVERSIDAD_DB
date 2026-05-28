@@ -35,7 +35,7 @@ create table Academico.Carrera(
 	CreatedAt datetime default getdate(),
 	UpdatedAt datetime null,
 	DeletedAt datetime
-);
+)
 go
 
 create table Academico.Estudiante(
@@ -47,7 +47,7 @@ create table Academico.Estudiante(
 	Email nvarchar(255) null constraint ck_Estudiante_Email check (Email like '%@%.%'), --Agrego constraint de check para validar que el email tenga un formato correcto
 	Telefono varchar(20) null,
 	Carrera_ID int constraint fk_Estudiante_Carrera foreign key references Academico.Carrera(CarreraID), --Agrego constraint de foreign key para relacionar con la tabla Carrera
-);
+)
 go
 
 create table Seguridad.Cargo(
@@ -56,7 +56,7 @@ create table Seguridad.Cargo(
 	CreatedAt datetime default getdate(),
 	UpdatedAt datetime null,
 	DeletedAt datetime
-);
+)
 go
 
 create table Seguridad.Usuario(
@@ -71,5 +71,26 @@ create table Seguridad.Usuario(
 	CreatedAt datetime default getdate(),
 	UpdatedAt datetime null,
 	DeletedAt datetime
-);
+)
 go
+
+-- Primero insertamos un Cargo obligatorio (Requisito por la nueva FK que agregamos para cumplir las reglas)
+INSERT INTO Seguridad.Cargo (Nombres) VALUES (N'Administrador');
+
+INSERT INTO Academico.Carrera(nombres, precio) VALUES('Ingenieria de Software', 1500);
+GO 
+
+SELECT * FROM Academico.Carrera;
+GO
+
+UPDATE Academico.Carrera SET Precio = 2000, UpdatedAt = getdate() WHERE CarreraID = 1;
+GO
+
+-- Insert de Usuario usando el HASHBYTES
+INSERT INTO Seguridad.Usuario(cif, nombres, apellidos, FechaNacimiento, pw, Email, Cargo_ID)
+VALUES('401', 'an', 'Perez', '1995-10-20', HASHBYTES('SHA2_256', 'Temp2026'), 'admin@universidad.edu.ni', 1);
+GO
+
+-- Select final de usuarios para verificar la clave encriptada
+SELECT * FROM Seguridad.Usuario;
+GO
