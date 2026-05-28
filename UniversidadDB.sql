@@ -49,3 +49,12 @@ create table Academico.Estudiante(
 	Carrera_ID int constraint fk_Estudiante_Carrera foreign key references Academico.Carrera(CarreraID), --Agrego constraint de foreign key para relacionar con la tabla Carrera
 );
 go
+
+create table Seguridad.Cargo(
+	CargoID int identity(1,1) constraint PK_CargoID primary key, --Agrego constraint de clave primaria
+	Nombres nvarchar(60) not null,
+	CreatedAt datetime default getdate(),
+	UpdatedAt datetime null,
+	DeletedAt datetime
+);
+go
