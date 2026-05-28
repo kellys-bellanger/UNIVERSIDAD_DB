@@ -37,3 +37,15 @@ create table Academico.Carrera(
 	DeletedAt datetime
 );
 go
+
+create table Academico.Estudiante(
+	EstudianteID int identity(1,1) constraint PK_EstudianteID primary key, --Agrego constraint de clave primaria
+	CIF varchar(8) not null constraint uq_Estudiante_CIF unique, --Agrego constraint de unique para asegurar que el CIF sea unico en la tabla
+	Nombres nvarchar(60) not null,
+	Apellidos nvarchar(60) not null,
+	FechaNacimiento datetime null,
+	Email nvarchar(255) null constraint ck_Estudiante_Email check (Email like '%@%.%'), --Agrego constraint de check para validar que el email tenga un formato correcto
+	Telefono varchar(20) null,
+	Carrera_ID int constraint fk_Estudiante_Carrera foreign key references Academico.Carrera(CarreraID), --Agrego constraint de foreign key para relacionar con la tabla Carrera
+);
+go
