@@ -58,3 +58,18 @@ create table Seguridad.Cargo(
 	DeletedAt datetime
 );
 go
+
+create table Seguridad.Usuario(
+	UsuarioID int identity(1,1) constraint PK_UsuarioID primary key, --Agrego constraint de clave primaria
+	CIF varchar(8) not null constraint UQ_Usuario_CIF unique, --Agrego constraint de unique para asegurar que el CIF sea unico en la tabla
+	Nombres nvarchar(60) not null,
+	Apellidos nvarchar(60) not null,
+	FechaNacimiento datetime null,
+	pw varbinary(64) not null,
+	Email nvarchar(255) null constraint CK_Usuario_Email check (Email like '%@%.%'), --Agrego constraint de check para validar que el email tenga un formato correcto
+	Cargo_ID int constraint FK_Usuario_Cargo foreign key references Seguridad.Cargo(CargoID), --Agrego constraint de foreign key para relacionar con la tabla Cargo
+	CreatedAt datetime default getdate(),
+	UpdatedAt datetime null,
+	DeletedAt datetime
+);
+go
